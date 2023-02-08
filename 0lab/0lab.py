@@ -42,7 +42,8 @@ def convert_dict_to_numpy(collections_of_values: dict):
 
 def plotting_discrate_population(collections_of_values: dict) -> None:
 
-    plt.bar(list(collections_of_values.keys()), collections_of_values.values(), width=0.005, color='g')
+    plt.bar(list(collections_of_values.keys()), \
+            collections_of_values.values(), width=0.005, color='g')
     plt.show()
 
     # fig = px.scatter(x=collections_of_values.keys(), y=collections_of_values.values())
