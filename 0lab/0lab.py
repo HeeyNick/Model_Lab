@@ -44,6 +44,7 @@ def convert_dict_to_numpy(collections_of_values: dict):
 
 
 def plotting_discrate_population(collections_of_values: dict) -> None:
+    'Visualisation of population'
 
     plt.bar(list(collections_of_values.keys()), \
             list(collections_of_values.values()), width=0.005, color='g')
@@ -53,7 +54,7 @@ def plotting_discrate_population(collections_of_values: dict) -> None:
     # fig.show()
 
 def calculated_interval_of_population(collections_of_values: dict, N: int) -> float:
-
+    'Calculate step and count of intervals in population'
     x_max = max(collections_of_values.keys())
     x_min = min(collections_of_values.keys())
 
@@ -71,6 +72,7 @@ def calculated_interval_of_population(collections_of_values: dict, N: int) -> fl
     return k
 
 def make_intervals_population(list_of_values: list, interval: int):
+    'counting values ​​in an interval'
     s = pd.Series(list_of_values)
     # s = s.groupby(pd.cut(s, bins = interval), observed= True)\
     #           .apply(lambda x: x.to_list())
@@ -82,7 +84,7 @@ def make_intervals_population(list_of_values: list, interval: int):
 
 
 def main() -> None:
-
+    'Main function'
     list_of_values = generate_list_of_vlues(N)
     collections_of_values = make_collection_of_values(list_of_values)
 
