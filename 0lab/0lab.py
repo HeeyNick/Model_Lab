@@ -14,8 +14,10 @@ N = 1000
 
 def generate_list_of_vlues(count_of_elements: int) -> list[float]:
     "Generate subsequence to list"
-    list_of_values: list = [round(random.random(), 6) \
+    list_of_values: list = [round(random.random(), 3) \
                             for i in range(count_of_elements)]
+
+
     return list_of_values
     
 def make_collection_of_values(list_of_values: list[float]) -> Counter[float]:
@@ -36,6 +38,7 @@ def write_to_json(collections_of_values: dict) -> None:
 
 
 def convert_dict_to_numpy(collections_of_values: dict):
+    "Not using function -> it can be been"
     result = collections_of_values.items()
     data = list(result)
     numpy_array = np.array(data)
@@ -61,18 +64,19 @@ def calculated_interval_of_population(collections_of_values: dict, N: int) -> fl
     print(x_min, x_max)
 
     k = (math.log10(N) * 3.322) + 1
+    print (round(k))
 
     if k > 15:
         k = 15
     elif k < 5:
         k = 5
 
-    h = (x_max - x_min)/k
+    h = (x_max - x_min)/k  
 
-    return k
+    return round(k)
 
 def make_intervals_population(list_of_values: list, interval: int):
-    'counting values ​​in an interval'
+    'counting values in an interval'
     s = pd.Series(list_of_values)
     # s = s.groupby(pd.cut(s, bins = interval), observed= True)\
     #           .apply(lambda x: x.to_list())
@@ -91,14 +95,10 @@ def main() -> None:
     # beautiful_print_of_discrate_population(dict(collections_of_values))
     # print(collections_of_values.most_common(3))
 
-    # plotting_discrate_population(dict(collections_of_values))
+    plotting_discrate_population(dict(collections_of_values))
 
     interval = calculated_interval_of_population(collections_of_values, N)
     make_intervals_population(list_of_values, int(interval))
-
-
-
-
 
 if __name__ == "__main__":
     main()
