@@ -6,11 +6,12 @@ const calcStep = () => {
     let k = Math.round(Math.log10(N) * 3.322 + 1);
     k = k < 5 ? 5 : k;
     k = k > 15 ? 15 : k;
+    // xMax = 1, xMin = 0. 1 - 0 = 1
     return 1 / k;
 };
 const k = calcStep();
 const generateIntervals = () => {
-    for (let i = 0; i < 1 - k; i += k) {
+    for (let i = 0; i < 1; i += k) {
         intervals.set([+i.toFixed(2), +(i + k).toFixed(2)], 0);
     }
 };
@@ -69,6 +70,33 @@ const calcHi = () => {
         hiSqrt += hi;
     }
 };
+const t = 2;
+const autocorrelation = () => {
+    const mathWait = calcMathWait();
+    const disp = calcDisp(mathWait);
+    let correlation = 0;
+    const nis = Array.from(intervals.values());
+    for (let i = 0; i < nis.length - t; i++) {
+        correlation +=
+            ((nis[i] - mathWait) * (nis[i + t] - mathWait)) /
+                (disp * (nis.length - t));
+    }
+    return correlation;
+};
+const calcMathWait = () => {
+    let mathWait = 0;
+    for (let [interval, ni] of intervals) {
+        mathWait += ni;
+    }
+    return mathWait / Array.from(intervals.values()).length;
+};
+const calcDisp = (mathWait) => {
+    let disp = 0;
+    for (let [interval, ni] of intervals) {
+        disp += Math.pow(ni - mathWait, 2);
+    }
+    return disp / Array.from(intervals.values()).length;
+};
 generateIntervals();
 generateNumbers();
 calcPi();
@@ -77,4 +105,5 @@ calcDiff();
 calcSqrt();
 calcSqrtDivNih();
 calcHi();
-console.log(intervals, hiSqrt);
+const corr = autocorrelation();
+console.log(intervals, hiSqrt, corr);
