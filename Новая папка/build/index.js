@@ -6,11 +6,10 @@ const calcStep = () => {
     let k = Math.round(Math.log10(N) * 3.322 + 1);
     k = k < 5 ? 5 : k;
     k = k > 15 ? 15 : k;
-    // xMax = 1, xMin = 0. 1 - 0 = 1
     return 1 / k;
 };
-const k = calcStep();
 const generateIntervals = () => {
+    const k = calcStep();
     for (let i = 0; i < 1; i += k) {
         intervals.set([+i.toFixed(2), +(i + k).toFixed(2)], 0);
     }
@@ -64,14 +63,15 @@ const calcSqrtDivNih = () => {
             sqrtDivNih.set(interval, s / ni_h);
     }
 };
-let hiSqrt = 0;
 const calcHi = () => {
+    let hiSqrt = 0;
     for (let hi of sqrtDivNih.values()) {
         hiSqrt += hi;
     }
+    return hiSqrt;
 };
-const t = 2;
 const autocorrelation = () => {
+    const t = 2;
     const mathWait = calcMathWait();
     const disp = calcDisp(mathWait);
     let correlation = 0;
@@ -97,13 +97,21 @@ const calcDisp = (mathWait) => {
     }
     return disp / Array.from(intervals.values()).length;
 };
-generateIntervals();
-generateNumbers();
-calcPi();
-calcNih();
-calcDiff();
-calcSqrt();
-calcSqrtDivNih();
-calcHi();
-const corr = autocorrelation();
-console.log(intervals, hiSqrt, corr);
+const hiSqrt = () => {
+    calcPi();
+    calcNih();
+    calcDiff();
+    calcSqrt();
+    calcSqrtDivNih();
+    const hi = calcHi();
+    return hi;
+};
+const bootstrap = () => {
+    generateIntervals();
+    generateNumbers();
+    const hi = hiSqrt();
+    const corr = autocorrelation();
+    console.log(intervals);
+    console.log("\nХи-квадрат:", hi, "\nАвтокорреляция: ", corr);
+};
+bootstrap();
