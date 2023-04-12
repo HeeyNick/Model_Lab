@@ -1,0 +1,11 @@
+graph degree {
+	0 [color=coral style=filled]
+	1 [color=deeppink1 style=filled]
+	2 [color=deeppink1 style=filled]
+	3 [color=deeppink1 style=filled]
+	4 [color=lightgrey style=filled]
+	2 -- 3
+	3 -- 1
+	2 -- 4
+	1 -- 0
+}
