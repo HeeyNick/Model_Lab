@@ -1,83 +1,88 @@
-#!/usr/bin/python
-
+import networkx as nx
+import matplotlib.pyplot as plt
 import sys
 import random
-from graphviz import Graph
-
-def gen_graph_deep(n_node, max_deep):
-    nodes = range(n_node)
-    nodes = list(nodes)
-    used_nodes = []
-    edges = []
-    deeps = {}
-
-    root = random.randint(0, n_node - 1)
-    used_nodes.append(root)
-    nodes.remove(root)
-    deeps[root] = 0
-    while len(nodes) > 0:
-        x = used_nodes[random.randint(0, len(used_nodes) - 1)]
-        y = nodes[random.randint(0, len(nodes) - 1)]
-
-        if deeps[x] + 1 > max_deep:
-            continue
-
-        used_nodes.append(y)
-        nodes.remove(y)
-        deeps[y] = deeps[x] + 1
-        edges.append(str(x) + '-' + str(y))
-
-    return edges
-
-def gen_graph_degree(n_node, max_degree):
-    nodes = range(n_node)
-    nodes = list(nodes)
-    used_nodes = []
-    edges = []
-    degrees = {}
-
-    root = random.randint(0, n_node - 1)
-    used_nodes.append(root)
-    nodes.remove(root)
-    degrees[root] = 0
-    while len(nodes) > 0:
-        x = used_nodes[random.randint(0, len(used_nodes) - 1)]
-        y = nodes[random.randint(0, len(nodes) - 1)]
-
-        if degrees[x] + 1 > max_degree:
-            continue
-
-        used_nodes.append(y)
-        nodes.remove(y)
-        degrees[y] = 1
-        degrees[x] += 1
-        edges.append(str(x) + '-' + str(y))
-
-    return edges
-
-def graph_draw(nodes, edges, name):
-    colors = ['coral', 'lightblue2', 'lightgrey', 'aquamarine1', \
-              'gold', 'deeppink1', 'deeppink1', 'orange']
-
-    g = Graph(name, format = "png")
-    for node in nodes:
-        color = colors[random.randint(0, len(colors) - 1)]
-        g.node(str(node), color=color, style='filled')
-    for edge in edges:
-        x = edge.split('-')[0]
-        y = edge.split('-')[1]
-        g.edge(x,y)
-    g.view()
+from io import TextIOWrapper
+import sys
 
 
-def main(argv=None):
-    nodes = 5
-    deep = 3
-    degree = 3
-    edges = gen_graph_deep(nodes, deep)
-    graph_draw(range(nodes), edges, "deep")
-    edges = gen_graph_degree(nodes, degree)
-    graph_draw(range(nodes), edges, "degree")
+def read_graph(f: TextIOWrapper) -> nx.Graph:
+    g = nx.Graph()
 
-if __name__ == "__main__":
-    sys.exit(main())
+    s = f.readline()
+    l = s.split(' ')
+    n = int(l[0])
+    g.add_nodes_from(range(n))
+
+    for s in f.readlines():
+        l = s.split(' ')
+        g.add_edge(int(l[0]), int(l[1]))
+        g.add_edge(int(l[1]), int(l[0]))
+
+    return g
+
+def display_graph():
+    g = nx.Graph()
+    with open('a.gph', 'r') as f:
+        g = read_graph(f)
+    nx.draw_spring(g, with_labels=True)
+    plt.show()
+
+def create_graph(height: int, width: int):
+    with open('a.gph', 'w') as f:
+        print("Create graph") 
+        f.write(f'{1} {1}')
+        m = 1
+        if(width > 1):
+            r = random.randint(1, height-m)
+            rp = random.randint(1, width-m)
+
+        cnt = height + 1
+        for i in range(height):
+            if (i == r):
+                if width == 1:
+                    print(i,'--',i + 1)
+                    f.write(f'{i} {i + 1}')
+                else:
+                    for j in range(width):
+                        if j == rp:
+                            print(i,'--',i + 1)
+                            f.write(f'\n{i} {i + 1}')
+                        else:
+                            print(i,'--',cnt)
+                            f.write(f'\n{i} {cnt}')
+                            cnt += 1
+            else:
+                if width > 1:
+                    rr = random.randint(1, width-m+1)
+                if rr == 1:
+                    print(i,'--',i + 1)
+                    f.write(f'\n{i} {i + 1}')
+                else:
+                    if rr > 1:
+                        rrp = random.randint(1, rr-m)
+                    for k in range(rr):
+                        if (k == rrp):
+                            print(i,'--',i + 1)
+                            f.write(f'\n{i} {i + 1}')
+                        else:
+                            print(i,'--',cnt)
+                            f.write(f'\n{i} {cnt}')
+                            cnt += 1
+
+if __name__ == '__main__':
+    print('Input Height: ')
+    height = int(input())
+    if height < 2:
+        print("Height < 2")
+        sys.exit()
+    print('Input Width: ')
+    width = int(input())
+    if width < 1:
+        print("Width < 1")
+        sys.exit()
+
+    create_graph(height, width)
+    display_graph()
+
+    
