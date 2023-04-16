@@ -62,7 +62,6 @@ const calcNih = () => {
 
 const calcDiff = () => {
   for (const [interval, props] of map.entries()) {
-    // const ni = intervals.get(interval);
     const ni = props.at(0);
 
     if (ni) {

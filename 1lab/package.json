@@ -1,5 +1,5 @@
 {
-  "name": "lab0",
+  "name": "1lab",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,8 +7,5 @@
     "start": "npx ts-node src/index.ts"
   },
   "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/node": "^18.15.11"
-  }
+  "license": "ISC"
 }
