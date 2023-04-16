@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-import numpy as np
 import math
 import random
 
@@ -18,16 +17,14 @@ def f2(x):
 arrayX = list()
 arrayY = list()
 
-arr = []
-for i in range(500):
-    x = random.random() * 1.895
+x_max = 1.895
+for i in range(2000):
+    x = random.random() * x_max
     sigma = random.random()
-    y = f1(x) + (f2(x) - f1(x)) * sigma
+    y = f2(x) + (f1(x) - f2(x)) * sigma
     arrayX.append(x)
     arrayY.append(y)
 
 
 plt.scatter(arrayX, arrayY)
-
-
 plt.show()
